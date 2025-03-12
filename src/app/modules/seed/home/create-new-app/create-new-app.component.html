@@ -1,0 +1,104 @@
+<!-- Outer wrapper that takes full screen space and centers content -->
+<div class="flex items-center justify-center w-full h-screen p-4">
+
+    <!-- 
+      Inner wrapper: 
+      - Make it responsive with w-full & max-w-3xl 
+      - Keep your form design, header, etc.
+    -->
+    <div class="w-full max-w-3xl">
+
+        <!-- Existing container + layout from your code -->
+        <div class="flex min-w-0 flex-auto flex-col bg-white">
+
+            <!-- Header / Title area (optional) -->
+            <div
+                class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8">
+                <div class="min-w-0 flex-1">
+                    <div class="flex flex-wrap items-center font-medium">
+                        <div>
+                            <a class="whitespace-nowrap text-primary-500">Create New App</a>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <h2 class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl">
+                            Create New App
+                        </h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main body -->
+            <div class="flex-auto p-6 sm:p-10">
+                <div class="max-w-3xl">
+                    <form [formGroup]="createAppForm"
+                        class="bg-card flex flex-col overflow-hidden rounded px-8 py-6 shadow">
+                        <!-- App Name -->
+                        <div class="mb-6">
+                            <p class="text-lg font-medium mb-2">App Name</p>
+                            <mat-form-field class="w-full">
+                                <mat-label>Give this app a unique name</mat-label>
+                                <input matInput formControlName="appName" placeholder="app-name" required />
+                                <mat-hint align="end">
+                                    {{
+                                    createAppForm.get('appName')?.value?.length || 0
+                                    }}/30
+                                </mat-hint>
+                                <mat-error *ngIf="
+                      createAppForm.get('appName')?.hasError('required')
+                    ">
+                                    App name is required
+                                </mat-error>
+                                <mat-error *ngIf="
+                      createAppForm.get('appName')?.hasError('maxlength')
+                    ">
+                                    Max length is 30 characters
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <!-- Region -->
+                        <div class="mb-6">
+                            <p class="text-lg font-medium mb-2">Location (Region)</p>
+                            <p class="text-sm text-secondary mb-4">
+                                Choose a Common Runtime region for this app.
+                                <a href="https://devcenter.heroku.com/articles/regions" target="_blank"
+                                    rel="noopener noreferrer" class="text-primary-500">Learn more.</a>
+                            </p>
+                            <mat-radio-group formControlName="region" class="flex flex-col gap-2">
+                                <mat-radio-button [value]="'us'">
+                                    <span class="ml-2">United States (Common Runtime)</span>
+                                </mat-radio-button>
+                                <mat-radio-button [value]="'eu'">
+                                    <span class="ml-2">Europe (Common Runtime)</span>
+                                </mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+
+                        <!-- Add to pipeline (toggle) -->
+                        <div class="mb-6 flex items-center">
+                            <mat-slide-toggle formControlName="addPipeline" color="primary">
+                                Add this app to a pipeline
+                            </mat-slide-toggle>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="border-t border-gray-200 mt-6 pt-6 flex justify-end">
+                            <!-- Cancel -->
+                            <button mat-button type="button" class="mr-3" (click)="onCancel()">
+                                Cancel
+                            </button>
+
+                            <!-- Create App -->
+                            <button mat-flat-button color="primary" (click)="onCreateApp()"
+                                [disabled]="createAppForm.invalid">
+                                Create app
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
